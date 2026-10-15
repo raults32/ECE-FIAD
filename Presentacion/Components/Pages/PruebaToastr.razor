@@ -1,0 +1,23 @@
+﻿@page "/toasts"
+@inject Presentacion.Servicios.IToastrService Toastr
+
+<PageTitle>Prueba Toastr</PageTitle>
+
+<div class="card p-4 shadow-sm">
+    <h4 class="mb-2">Evaluación del Servicio de Notificaciones (Toastr)</h4>
+    <p class="text-muted">Prueba la emisión de alertas no invasivas en pantalla.</p>
+    <div class="d-flex gap-2 mt-2 flex-wrap">
+        <button class="btn btn-success" @onclick="@(() => Toastr.MsgExito("Transacción registrada con éxito."))">
+            <i class="fas fa-check-circle me-1"></i> Éxito
+        </button>
+        <button class="btn btn-danger" @onclick="@(() => Toastr.MsgError("Ocurrió un error en el procesamiento de datos."))">
+            <i class="fas fa-times-circle me-1"></i> Error
+        </button>
+        <button class="btn btn-warning" @onclick="@(() => Toastr.MsgAdvertencia("Verifique la consistencia de los campos obligatorios."))">
+            <i class="fas fa-exclamation-triangle me-1"></i> Advertencia
+        </button>
+        <button class="btn btn-info text-white" @onclick="@(() => Toastr.MsgInformacion("Actualización de catálogo completada."))">
+            <i class="fas fa-info-circle me-1"></i> Información
+        </button>
+    </div>
+</div>

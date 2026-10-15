@@ -1,0 +1,72 @@
+@page "/editar-paciente/{id:int}"
+@rendermode @(new InteractiveServerRenderMode(prerender: false))
+<PageTitle>Edición de Paciente - ECE FIAD</PageTitle>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark rounded-top-4">
+                    <h5 class="mb-0 fw-bold">Editar Paciente: @pacienteOriginal?.Nombres @pacienteOriginal?.Apellidos</h5>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    @if (pacienteOriginal == null)
+                    {
+                        <div class="alert alert-info text-center">Cargando datos del paciente...</div>
+                    }
+                    else
+                    {
+                        <EditForm Model="@pacienteEditar" OnValidSubmit="@GrabarPaciente">
+                            <FluentValidator />
+
+                            <div class="p-3 bg-white rounded-3 border mb-3">
+                                <h6 class="text-muted fw-bold mb-2">Datos de Identidad (No Editables)</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6"><label class="small text-muted">Número Documento</label><p class="fw-bold">@pacienteOriginal.NumeroDocumento</p></div>
+                                    <div class="col-md-6"><label class="small text-muted">Tipo Documento</label><p class="fw-bold">@EnumHelper.ObtenerNombreEnum(pacienteOriginal.TipoDocumento)</p></div>
+                                    <div class="col-md-4"><label class="small text-muted">Fecha Nacimiento</label><p class="fw-bold">@pacienteOriginal.FechaNacimiento.ToString("dd/MM/yyyy")</p></div>
+                                    <div class="col-md-4"><label class="small text-muted">Género</label><p class="fw-bold">@EnumHelper.ObtenerNombreEnum(pacienteOriginal.Genero)</p></div>
+                                    <div class="col-md-4"><label class="small text-muted">Grupo Sanguíneo</label><p class="fw-bold text-danger">@EnumHelper.ObtenerNombreEnum(pacienteOriginal.GrupoSanguineo)</p></div>
+                                </div>
+                            </div>
+
+                            <div class="p-3 bg-white rounded-3 border mb-3">
+                                <h6 class="text-primary fw-bold mb-2">Datos Modificables</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="nombres" class="form-label fw-semibold">Nombres</label>
+                                        <InputText id="nombres" class="form-control" @bind-Value="pacienteEditar.Nombres" />
+                                        <ValidationMessage For="@(() => pacienteEditar.Nombres)" class="text-danger small" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="apellidos" class="form-label fw-semibold">Apellidos</label>
+                                        <InputText id="apellidos" class="form-control" @bind-Value="pacienteEditar.Apellidos" />
+                                        <ValidationMessage For="@(() => pacienteEditar.Apellidos)" class="text-danger small" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="telefono" class="form-label fw-semibold">Teléfono</label>
+                                        <InputText id="telefono" class="form-control" @bind-Value="pacienteEditar.Telefono" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="email" class="form-label fw-semibold">Email</label>
+                                        <InputText id="email" class="form-control" @bind-Value="pacienteEditar.Email" />
+                                        <ValidationMessage For="@(() => pacienteEditar.Email)" class="text-danger small" />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="direccion" class="form-label fw-semibold">Dirección</label>
+                                        <InputText id="direccion" class="form-control" @bind-Value="pacienteEditar.Direccion" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-secondary px-4" @onclick="Cancelar">Cancelar</button>
+                                <button type="submit" class="btn btn-primary px-4 shadow-sm">Guardar Cambios</button>
+                            </div>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

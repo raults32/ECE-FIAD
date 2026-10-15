@@ -1,0 +1,60 @@
+using Microsoft.AspNetCore.Components;
+using Aplicacion.DTOs.Pacientes;
+using Aplicacion.Servicios.Interfaces;
+using Presentacion.Servicios;
+
+namespace Presentacion.Components.Pages.Pacientes
+{
+    public partial class EditarPacientes : ComponentBase
+    {
+        [Inject] private IPacienteService PacienteService { get; set; } = null!;
+        [Inject] private IToastrService Toastr { get; set; } = null!;
+        [Inject] private NavigationManager Navigation { get; set; } = null!;
+
+        [Parameter] public int id { get; set; }
+
+        protected PacienteDTO? pacienteOriginal;
+        protected ActualizarPacienteDTO pacienteEditar = new();
+
+        protected override async Task OnInitializedAsync()
+        {
+            await CargarPaciente();
+        }
+
+        private async Task CargarPaciente()
+        {
+            var resultado = await PacienteService.ObtenerPorIdAsync(id);
+            if (resultado.Exitoso && resultado.Datos != null)
+            {
+                pacienteOriginal = resultado.Datos;
+                pacienteEditar.Id = pacienteOriginal.Id;
+                pacienteEditar.Nombres = pacienteOriginal.Nombres;
+                pacienteEditar.Apellidos = pacienteOriginal.Apellidos;
+                pacienteEditar.Telefono = pacienteOriginal.Telefono ?? string.Empty;
+                pacienteEditar.Email = pacienteOriginal.Email ?? string.Empty;
+                pacienteEditar.Direccion = pacienteOriginal.Direccion ?? string.Empty;
+            }
+            else
+            {
+                await Toastr.MsgError("Paciente no encontrado o error al cargar.");
+                Navigation.NavigateTo("/pacientes");
+            }
+        }
+
+        protected async Task GrabarPaciente()
+        {
+            var resultado = await PacienteService.ActualizarAsync(pacienteEditar);
+            if (resultado.Exitoso)
+            {
+                await Toastr.MsgExito("Paciente actualizado exitosamente.");
+                Navigation.NavigateTo("/pacientes");
+            }
+            else
+            {
+                await Toastr.MsgError("Error al actualizar: " + resultado.Mensaje);
+            }
+        }
+
+        protected void Cancelar() => Navigation.NavigateTo("/pacientes");
+    }
+}

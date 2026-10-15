@@ -1,0 +1,37 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# Build byproducts
+bin/
+obj/
+out/
+
+# NuGet
+*.nupkg
+packages/
+
+# Visual Studio Code
+.vscode/
+
+# ASP.NET / dotnet
+appsettings.Production.json
+appsettings.Local.json
+secrets.json
+
+# EF Core Migrations (optional)
+Migrations/
+
+# Node
+node_modules/
+
+# Logs
+*.log
